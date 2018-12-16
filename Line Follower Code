@@ -1,0 +1,98 @@
+intrs=8;
+int ls=9;
+int lm1=4;
+int lm2=5;
+int rm1=6;
+int rm2=7;
+int l1;
+int r1;
+char cond='n';
+void setup() 
+{
+Serial.begin(9600);
+pinMode(ls,INPUT);
+pinMode(rs,INPUT);
+pinMode(lm1,OUTPUT);
+pinMode(lm2,OUTPUT);
+pinMode(rm1,OUTPUT);
+pinMode(rm2,OUTPUT);
+}
+
+void loop() 
+{
+readS();
+Serial.println(cond);
+  motion(cond);
+
+}
+void readS()
+{
+
+  l1=digitalRead(ls);
+  r1=digitalRead(rs);
+  if(l1!=1&&r1!=1)
+cond='s';
+  else if(l1==1&&r1!=1)
+cond='r';
+  else if(l1!=1&&r1==1)
+cond='l';
+  else if(l1==1&&r1==1)
+cond='n';
+}
+   void motion(char cond)
+{
+  switch(cond)
+  {
+    case 's':
+    {
+forward();
+    }
+    break;
+case'r':
+    {
+right();
+
+    }
+    break;
+case'l':
+    {
+left();
+
+    }
+    break;
+case'n':
+    {
+stopie();
+    }
+    break;
+    }
+}
+
+void forward()
+{
+digitalWrite(lm1,1);
+digitalWrite(lm2,0);
+digitalWrite(rm1,1);
+digitalWrite(rm2,0);
+}
+void left()
+{
+digitalWrite(lm1,0);
+digitalWrite(lm2,1);
+digitalWrite(rm1,HIGH);
+digitalWrite(rm2,LOW);
+}
+void right()
+{
+digitalWrite(lm1,1);
+digitalWrite(lm2,0);
+digitalWrite(rm1,0);
+digitalWrite(rm2,1);
+  }
+void stopie()
+{  
+digitalWrite(lm1,0);
+digitalWrite(lm2,LOW);
+digitalWrite(rm1,0);
+digitalWrite(rm2,LOW);  
+  }
