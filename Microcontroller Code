@@ -1,6 +1,6 @@
 #include <Servo.h>. 
-const int trigPin = 10;
-const int echoPin = 11;
+const int trigPin = 9; //digital pin-9 to trig pin of ultrasonic sensor
+const int echoPin = 8; //digital pin-8 to echo pin of ultrasoinc sensor
 long duration;
 int distance;
 Servo myServo; 
@@ -9,22 +9,24 @@ void setup()
   pinMode(trigPin, OUTPUT); 
   pinMode(echoPin, INPUT); 
   Serial.begin(9600);
-  myServo.attach(12);
+  myServo.attach(12);  //servo motor control pin attached to digital pin-12
 }
 void loop() {
   
-  for(int i=15;i<=165;i++){  
+  for(int i=10;i<=159;i++)
+  {  
   myServo.write(i);
-  delay(30);
+  delay(30);           //servo motor rotating with ultrasonic sensor on top with a delay of 30ms for every degree
   distance = calculateDistance();
   Serial.print(i);
   Serial.print(","); 
   Serial.print(distance);
   Serial.print("."); 
   }
-  for(int i=165;i>15;i--){  
-  myServo.write(i);
-  delay(30);
+  for(int i=159;i>10;i--)
+  {  
+  myServo.write(i);  
+  delay(30);         //rotation in opposite direction
   distance = calculateDistance();
   Serial.print(i);
   Serial.print(",");
@@ -32,15 +34,15 @@ void loop() {
   Serial.print(".");
   }
 }
-int calculateDistance(){ 
-  
+int calculateDistance()
+{ 
   digitalWrite(trigPin, LOW); 
   delayMicroseconds(2);
   
   digitalWrite(trigPin, HIGH); 
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance= duration*0.034/2;
+  duration = pulseIn(echoPin, HIGH);   //calculation of the time between transmission and receival
+  distance= duration*0.034/2;          //calculation of distance using time 
   return distance;
 }
